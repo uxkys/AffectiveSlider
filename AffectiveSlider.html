@@ -104,6 +104,27 @@
     background-color: black; /* マウスオーバー時に背景を黒 */
     filter: brightness(10); /* マウスオーバー時にSVGを白 */
   }
+
+  /* フッターのスタイル */
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  footer a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
@@ -145,6 +166,15 @@
   <h3>log:</h3>
   <ul id="logList"></ul>
 </div>
+
+<!-- フッター -->
+<footer>
+  <p>
+    <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4743948/" target="_blank">
+      The Affective Slider: A Digital Self-Assessment Scale for the Measurement of Human Emotions
+    </a>
+  </p>
+</footer>
 
 <script>
 const arousalSlider = document.getElementById('arousal');
