@@ -4,38 +4,43 @@
 <meta charset="UTF-8">
 <title>感情スライダー</title>
 <style>
-  .emotion-slider {
+  .emotion-container {
     display: flex;
     align-items: center;
-    flex-direction: column; /* スライダーと画像を縦並びに */
     justify-content: center;
     margin-top: 20px;
-    position: relative;
   }
 
   .emotion-icon {
     width: 50px;
     height: 50px;
+    margin: 0 20px;
+  }
+
+  .emotion-slider-group {
+    display: flex;
+    flex-direction: column; /* スライダーと画像を縦並びに */
+    align-items: center;
   }
 
   #arousal, #pleasure {
     width: 300px;
-    height: 20px; /* スライダーの太さを2倍に */
+    height: 20px; /* スライダーの太さ */
     -webkit-appearance: none;
     appearance: none;
-    background-color: white; /* 塗りつぶしを白 */
-    border: 2px solid black; /* 枠線を黒に */
+    background-color: white; /* スライダーの塗りつぶし */
+    border: 2px solid black; /* スライダーの枠線 */
     border-radius: 10px;
   }
 
   #arousal::-webkit-slider-thumb, #pleasure::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 30px; /* つまみの大きさ */
+    width: 30px;
     height: 30px;
-    background-color: white; /* つまみの塗りつぶしを白 */
-    border: 4px solid black; /* つまみの枠線を黒に */
-    border-radius: 5px; /* 角丸の四角 */
+    background-color: white;
+    border: 4px solid black;
+    border-radius: 5px;
     cursor: pointer;
   }
 
@@ -48,28 +53,10 @@
     cursor: pointer;
   }
 
-  .log {
-    text-align: left;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    width: 600px;
-    margin: 20px auto;
-    font-family: Arial, sans-serif;
-    display: none;
-  }
-
-  .actions {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .actions a {
-    text-decoration: underline;
-    cursor: pointer;
-    margin: 0 10px;
-    color: blue;
-    font-size: 16px;
+  .gradient-arrow {
+    width: 300px; /* スライダーの幅に合わせて画像の幅を調整 */
+    height: 20px;
+    margin-top: 10px;
   }
 
   .submit-button {
@@ -84,37 +71,27 @@
     cursor: pointer;
     font-size: 16px;
   }
-
-  .gradient-arrow {
-    width: 300px; /* スライダーの下に配置される画像とスライダーの幅を合わせる */
-    height: 20px;
-  }
-
 </style>
 </head>
 <body>
 
-<!-- 画面上部のリンク -->
-<div class="actions">
-  <a id="resetButton">ログのリセット</a>
-  <a id="toggleLogButton">操作ログの表示/非表示</a>
-  <a id="downloadLogButton">ログのダウンロード</a>
-</div>
-
-<!-- 1本目のスライダー: sleep - surprised -->
-<div class="emotion-slider">
-  <img src="sleep.png" alt="Sleepy" class="emotion-icon">
-  <input type="range" id="arousal" min="0" max="100" value="50">
-  <img src="path_to_image.png" class="gradient-arrow" alt="Gradient Arrow">
-  <img src="surprised.png" alt="Surprised" class="emotion-icon">
-</div>
-
-<!-- 2本目のスライダー: sad - happy -->
-<div class="emotion-slider">
+<!-- スライダー群の両端に表情アイコンを配置 -->
+<div class="emotion-container">
   <img src="sad.png" alt="Sad" class="emotion-icon">
-  <input type="range" id="pleasure" min="0" max="100" value="50">
-  <img src="path_to_image.png" class="gradient-arrow" alt="Gradient Arrow">
+  <div class="emotion-slider-group">
+    <input type="range" id="arousal" min="0" max="100" value="50">
+    <img src="path_to_image.png" class="gradient-arrow" alt="Gradient Arrow">
+  </div>
   <img src="happy.png" alt="Happy" class="emotion-icon">
+</div>
+
+<div class="emotion-container">
+  <img src="sleep.png" alt="Sleepy" class="emotion-icon">
+  <div class="emotion-slider-group">
+    <input type="range" id="pleasure" min="0" max="100" value="50">
+    <img src="path_to_image.png" class="gradient-arrow" alt="Gradient Arrow">
+  </div>
+  <img src="surprised.png" alt="Surprised" class="emotion-icon">
 </div>
 
 <!-- saveボタン -->
@@ -122,47 +99,12 @@
   <button id="submitButton">save</button>
 </div>
 
-<!-- ログ表示エリア -->
-<div class="log" id="logContainer">
-  <h3>操作ログ:</h3>
-  <ul id="logList"></ul>
-</div>
-
 <script>
 const arousalSlider = document.getElementById('arousal');
 const pleasureSlider = document.getElementById('pleasure');
-const logList = document.getElementById('logList');
-const resetButton = document.getElementById('resetButton');
-const toggleLogButton = document.getElementById('toggleLogButton');
-const downloadLogButton = document.getElementById('downloadLogButton');
-const logContainer = document.getElementById('logContainer');
 const submitButton = document.getElementById('submitButton');
 
 let logEntries = [];  // ログを保存する配列
-let lastLogTimestamp = '';  // 最後の操作ログのタイムスタンプ
-
-// CSVファイルのダウンロード処理
-function downloadCSV(content, fileName) {
-  const a = document.createElement('a');
-  const blob = new Blob([content], { type: 'text/csv' });
-  a.href = URL.createObjectURL(blob);
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
-// CSV形式でのログ出力
-function exportLogToCSV() {
-  const header = 'Time,arousal,pleasure\n';
-  const rows = logEntries.map(entry => `${entry.time},${entry.arousal},${entry.pleasure}`).join('\n');
-  const csvContent = header + rows;
-
-  // 最新の操作ログのタイムスタンプをファイル名に使用
-  const fileName = `AffectiveSlider_${lastLogTimestamp}.csv`;
-
-  downloadCSV(csvContent, fileName);
-}
 
 // ログを送信した際に追加・表示する関数
 function addLogEntry() {
@@ -173,8 +115,6 @@ function addLogEntry() {
   // タイムスタンプを hh:mm:ss 形式に
   const formattedTime = currentTime.toLocaleTimeString('ja-JP');
 
-  lastLogTimestamp = formattedTime.replace(/:/g, "");  // 最新の操作ログのタイムスタンプをファイル名用に保存
-
   // ログを配列に追加
   logEntries.push({
     time: formattedTime,
@@ -182,44 +122,10 @@ function addLogEntry() {
     pleasure: pleasureValue
   });
 
-  // ログを更新して表示
-  updateLogDisplay();
-
   // スライダーを中央に戻す
   arousalSlider.value = 50;
   pleasureSlider.value = 50;
 }
-
-// ログを表示する関数
-function updateLogDisplay() {
-  logList.innerHTML = '';  // ログ表示をクリア
-  logEntries.forEach(entry => {
-    const logItem = document.createElement('li');
-    logItem.textContent = `タイム: ${entry.time}, arousal: ${entry.arousal}, pleasure: ${entry.pleasure}`;
-    logList.appendChild(logItem);
-  });
-}
-
-// 操作ログの表示/非表示を切り替える
-toggleLogButton.onclick = function() {
-  logContainer.style.display = (logContainer.style.display === "none" || logContainer.style.display === "") ? "block" : "none";
-};
-
-// ログのリセット
-resetButton.onclick = function() {
-  logEntries = [];  // ログ配列をクリア
-  updateLogDisplay();  // 表示をクリア
-  lastLogTimestamp = '';  // タイムスタンプをリセット
-};
-
-// ログのダウンロードボタン
-downloadLogButton.onclick = function() {
-  if (logEntries.length > 0) {
-    exportLogToCSV();
-  } else {
-    alert("操作ログが空です。ログを追加してください。");
-  }
-};
 
 // saveボタンが押されたときにログを記録し、スライダーをリセット
 submitButton.onclick = addLogEntry;
