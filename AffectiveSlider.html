@@ -89,12 +89,19 @@
     margin-top: 20px;
   }
 
-  .submit-button button {
-    padding: 10px 20px;
-    background-color: white; /* ボタンの塗りつぶし */
-    border: 2px solid black; /* ボタンの枠線 */
+  .submit-button img {
+    width: 50px; /* アイコンの大きさ */
+    height: 50px;
     cursor: pointer;
-    font-size: 16px;
+    border: 2px solid black; /* 枠線の追加 */
+    border-radius: 8px; /* 角丸 */
+    filter: brightness(0); /* 初期状態で黒 */
+    transition: background-color 0.3s, filter 0.3s;
+  }
+
+  .submit-button img:hover {
+    background-color: black; /* マウスオーバー時に背景を黒 */
+    filter: brightness(10); /* マウスオーバー時にSVGを白 */
   }
 </style>
 </head>
@@ -127,9 +134,9 @@
   <img src="happy.png" alt="Happy" class="emotion-icon">
 </div>
 
-<!-- saveボタン -->
+<!-- saveアイコン -->
 <div class="submit-button">
-  <button id="submitButton">save</button>
+  <img id="submitButton" src="check_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg" alt="Save Icon">
 </div>
 
 <!-- ログ表示エリア -->
@@ -231,7 +238,7 @@ downloadLogButton.onclick = function() {
   }
 };
 
-// saveボタンが押されたときにログを記録し、スライダーをリセット
+// saveアイコンが押されたときにログを記録し、スライダーをリセット
 submitButton.onclick = addLogEntry;
 
 </script>
