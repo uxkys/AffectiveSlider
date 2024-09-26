@@ -65,12 +65,12 @@
     margin-top: 10px;
   }
 
-  .actions a {
-    text-decoration: underline;
+  .actions img {
+    width: 24px;
+    height: 24px;
     cursor: pointer;
+    filter: brightness(0) invert(50%);
     margin: 0 10px;
-    color: blue;
-    font-size: 16px;
   }
 
   .log {
@@ -90,13 +90,14 @@
   }
 
   .submit-button img {
-    width: 50px; /* アイコンの大きさ */
-    height: 50px;
+    width: 120px; /* アイコンの大きさ */
+    height: 40px;
     cursor: pointer;
     border: 2px solid black; /* 枠線の追加 */
-    border-radius: 8px; /* 角丸 */
+    border-radius: 30px; /* 角丸 */
     filter: brightness(0); /* 初期状態で黒 */
     transition: background-color 0.3s, filter 0.3s;
+    margin-top: 32px;
   }
 
   .submit-button img:hover {
@@ -109,9 +110,9 @@
 
 <!-- 画面最上部のリンク -->
 <div class="actions">
-  <a id="resetButton">ログのリセット</a>
-  <a id="toggleLogButton">操作ログの表示/非表示</a>
-  <a id="downloadLogButton">ログのダウンロード</a>
+  <img id="resetButton" src="restart_alt_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg" alt="ログのリセット">
+  <img id="toggleLogButton" src="visibility_off_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg" alt="操作ログの表示/非表示">
+  <img id="downloadLogButton" src="download_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg" alt="ログのダウンロード">
 </div>
 
 <!-- 1本目のスライダー: sleep - surprised（arousal） -->
@@ -141,7 +142,7 @@
 
 <!-- ログ表示エリア -->
 <div class="log" id="logContainer">
-  <h3>操作ログ:</h3>
+  <h3>log:</h3>
   <ul id="logList"></ul>
 </div>
 
@@ -212,14 +213,20 @@ function updateLogDisplay() {
   logList.innerHTML = '';  // ログ表示をクリア
   logEntries.forEach(entry => {
     const logItem = document.createElement('li');
-    logItem.textContent = `タイム: ${entry.time}, arousal: ${entry.arousal}, pleasure: ${entry.pleasure}`;
+    logItem.textContent = `time: ${entry.time}, arousal: ${entry.arousal}, pleasure: ${entry.pleasure}`;
     logList.appendChild(logItem);
   });
 }
 
 // 操作ログの表示/非表示を切り替える
 toggleLogButton.onclick = function() {
-  logContainer.style.display = (logContainer.style.display === "none" || logContainer.style.display === "") ? "block" : "none";
+  if (logContainer.style.display === "none" || logContainer.style.display === "") {
+    logContainer.style.display = "block";
+    toggleLogButton.src = "visibility_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg";
+  } else {
+    logContainer.style.display = "none";
+    toggleLogButton.src = "visibility_off_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg";
+  }
 };
 
 // ログのリセット
