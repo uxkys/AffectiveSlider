@@ -8,13 +8,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 64px;
   }
 
   .emotion-icon {
-    width: 50px;
+    width: 44px;
     height: 50px;
-    margin: 0 20px;
+    margin: 0 10px;
   }
 
   .emotion-slider-group {
@@ -24,39 +24,39 @@
   }
 
   #arousal, #pleasure {
-    width: 300px;
-    height: 20px; /* スライダーの太さ */
+    width: 400px;
+    height: 12px; /* スライダーの太さ */
     -webkit-appearance: none;
     appearance: none;
     background-color: white; /* スライダーの塗りつぶし */
-    border: 2px solid black; /* スライダーの枠線 */
+    border: 1px solid black; /* スライダーの枠線 */
     border-radius: 10px;
   }
 
   #arousal::-webkit-slider-thumb, #pleasure::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 23px;
     background-color: white;
-    border: 4px solid black;
-    border-radius: 5px;
+    border: 3px solid black;
+    border-radius: 10px;
     cursor: pointer;
   }
 
   #arousal::-moz-range-thumb, #pleasure::-moz-range-thumb {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 23px;
     background-color: white;
-    border: 4px solid black;
-    border-radius: 5px;
+    border: 3px solid black;
+    border-radius: 10px;
     cursor: pointer;
   }
 
   .gradient-arrow {
-    width: 300px; /* スライダーの幅に合わせて画像の幅を調整 */
-    height: 20px;
-    margin-top: 10px;
+    width: 416px; /* スライダーの幅に合わせて画像の幅を調整 */
+    height: 28px;
+    margin-top: 2px;
   }
 
   .actions {
@@ -107,17 +107,7 @@
   <a id="downloadLogButton">ログのダウンロード</a>
 </div>
 
-<!-- 1本目のスライダー: sad - happy（pleasure） -->
-<div class="emotion-container">
-  <img src="sad.png" alt="Sad" class="emotion-icon">
-  <div class="emotion-slider-group">
-    <input type="range" id="pleasure" min="0" max="100" value="50">
-    <img src="path_to_image.png" class="gradient-arrow" alt="Gradient Arrow">
-  </div>
-  <img src="happy.png" alt="Happy" class="emotion-icon">
-</div>
-
-<!-- 2本目のスライダー: sleep - surprised（arousal） -->
+<!-- 1本目のスライダー: sleep - surprised（arousal） -->
 <div class="emotion-container">
   <img src="sleep.png" alt="Sleepy" class="emotion-icon">
   <div class="emotion-slider-group">
@@ -125,6 +115,16 @@
     <img src="path_to_image.png" class="gradient-arrow" alt="Gradient Arrow">
   </div>
   <img src="surprised.png" alt="Surprised" class="emotion-icon">
+</div>
+
+<!-- 2本目のスライダー: sad - happy（pleasure） -->
+<div class="emotion-container">
+  <img src="sad.png" alt="Sad" class="emotion-icon">
+  <div class="emotion-slider-group">
+    <input type="range" id="pleasure" min="0" max="100" value="50">
+    <img src="path_to_image.png" class="gradient-arrow" alt="Gradient Arrow">
+  </div>
+  <img src="happy.png" alt="Happy" class="emotion-icon">
 </div>
 
 <!-- saveボタン -->
