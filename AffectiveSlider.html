@@ -1,3 +1,20 @@
+最下部に示すコードに以下の修正を行ってください。
+
+
+ログのリセットボタンを、テキストから次のアイコンに変更してください。「restart_alt_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.csv」
+
+操作ログの表示/非表示ボタンを、テキストから次のアイコンに変更し、「visibility_off_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg」
+操作ログが表示されているときは「visibility_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg」に変更してください
+
+ログのダウンロードボタンを、テキストから次のアイコンに変更してください。「download_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg」
+
+なお、アイコン類の色は全て#bdbdbdとし
+サイズは24pxとしてください。
+
+場所は今のまま変えないでください。
+
+
+==
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -65,12 +82,12 @@
     margin-top: 10px;
   }
 
-  .actions img {
-    width: 24px;
-    height: 24px;
+  .actions a {
+    text-decoration: underline;
     cursor: pointer;
-    filter: brightness(0) invert(50%);
     margin: 0 10px;
+    color: blue;
+    font-size: 16px;
   }
 
   .log {
@@ -97,33 +114,12 @@
     border-radius: 30px; /* 角丸 */
     filter: brightness(0); /* 初期状態で黒 */
     transition: background-color 0.3s, filter 0.3s;
-    margin-top: 32px;
+    margin-top: 16px;
   }
 
   .submit-button img:hover {
     background-color: black; /* マウスオーバー時に背景を黒 */
     filter: brightness(10); /* マウスオーバー時にSVGを白 */
-  }
-
-  /* フッターのスタイル */
-  footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f1f1f1;
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  footer a {
-    color: #0066cc;
-    text-decoration: none;
-  }
-
-  footer a:hover {
-    text-decoration: underline;
   }
 </style>
 </head>
@@ -131,9 +127,9 @@
 
 <!-- 画面最上部のリンク -->
 <div class="actions">
-  <img id="resetButton" src="restart_alt_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg" alt="ログのリセット">
-  <img id="toggleLogButton" src="visibility_off_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg" alt="操作ログの表示/非表示">
-  <img id="downloadLogButton" src="download_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg" alt="ログのダウンロード">
+  <a id="resetButton">ログのリセット</a>
+  <a id="toggleLogButton">操作ログの表示/非表示</a>
+  <a id="downloadLogButton">ログのダウンロード</a>
 </div>
 
 <!-- 1本目のスライダー: sleep - surprised（arousal） -->
@@ -163,18 +159,9 @@
 
 <!-- ログ表示エリア -->
 <div class="log" id="logContainer">
-  <h3>log:</h3>
+  <h3>操作ログ:</h3>
   <ul id="logList"></ul>
 </div>
-
-<!-- フッター -->
-<footer>
-  <p>
-    <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4743948/" target="_blank">
-      The Affective Slider: A Digital Self-Assessment Scale for the Measurement of Human Emotions
-    </a>
-  </p>
-</footer>
 
 <script>
 const arousalSlider = document.getElementById('arousal');
@@ -243,20 +230,14 @@ function updateLogDisplay() {
   logList.innerHTML = '';  // ログ表示をクリア
   logEntries.forEach(entry => {
     const logItem = document.createElement('li');
-    logItem.textContent = `time: ${entry.time}, arousal: ${entry.arousal}, pleasure: ${entry.pleasure}`;
+    logItem.textContent = `タイム: ${entry.time}, arousal: ${entry.arousal}, pleasure: ${entry.pleasure}`;
     logList.appendChild(logItem);
   });
 }
 
 // 操作ログの表示/非表示を切り替える
 toggleLogButton.onclick = function() {
-  if (logContainer.style.display === "none" || logContainer.style.display === "") {
-    logContainer.style.display = "block";
-    toggleLogButton.src = "visibility_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg";
-  } else {
-    logContainer.style.display = "none";
-    toggleLogButton.src = "visibility_off_40dp_E8EAED_FILL0_wght400_GRAD0_opsz40.svg";
-  }
+  logContainer.style.display = (logContainer.style.display === "none" || logContainer.style.display === "") ? "block" : "none";
 };
 
 // ログのリセット
@@ -282,3 +263,4 @@ submitButton.onclick = addLogEntry;
 
 </body>
 </html>
+==
